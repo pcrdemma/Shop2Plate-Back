@@ -3,7 +3,7 @@ const connection = require('../connection');
 
 const router = express.Router();
 
-router.get('/alluser', (req, res) => {
+router.get('/users', (req, res) => {
     const query = 'SELECT * FROM user';
 
     connection.query(query, (error, results) => {
