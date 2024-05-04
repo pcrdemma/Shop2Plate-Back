@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
-app.use('/products', productsRouter);
+// app.use('/products', productsRouter);
 
 
 

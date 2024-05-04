@@ -2,8 +2,8 @@ const express = require('express');
 const connection = require('../connection'); 
 
 const router = express.Router();
-
 router.get('/', (req, res) => {
+
     const query = 'SELECT * FROM user';
 
     connection.query(query, (error, results) => {

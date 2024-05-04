@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `User` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `firstname` varchar(255) NOT NULL,
     `lastname` varchar(255) NOT NULL,
     `email` varchar(255) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `User` (
 );
 
 CREATE TABLE IF NOT EXISTS `Product` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL,
     `price` int(11) NOT NULL,
     `category` varchar(255) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `Product` (
 );
 
 CREATE TABLE IF NOT EXISTS `ShoppingList` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `userId` int(11) NOT NULL,
     `productId` int(11) NOT NULL,
     FOREIGN KEY (userId) REFERENCES User(id),
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `ShoppingList` (
 );	
 
 CREATE TABLE IS NOT EXISTS `Expenses` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `userId` int(11) NOT NULL,
     `price` int(11) NOT NULL,
     `date` date NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IS NOT EXISTS `Expenses` (
 );
 
 CREATE TABLE IF NOT EXISTS `Stock` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `userId` int(11) NOT NULL,
     `productStockId` int(11) NOT NULL,
     FOREIGN KEY (userId) REFERENCES User(id),
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `Stock` (
 );
 
 CREATE TABLE IF NOT EXISTS `ProductStock` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL,
     `price` int(11) NOT NULL,
     `quantity` int(11) NOT NULL,
