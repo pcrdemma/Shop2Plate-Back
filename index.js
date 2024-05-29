@@ -2,6 +2,7 @@ const express = require('express');
 const usersRouter = require('./router/users');
 const productsRouter = require('./router/products');
 const productStockRouter = require ('./router/productStock');
+const expensesRouter = require ('./router/expenses');
 const app = express(); 
 
 app.use(express.json());
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/productstock', productStockRouter);
+app.use('/expenses', expensesRouter);
 
 
 app.use((err, req, res, next) => {

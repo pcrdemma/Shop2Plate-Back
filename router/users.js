@@ -1,5 +1,5 @@
 const express = require('express');
-const connection = require('../connection');
+const client = require('../connection');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 
@@ -9,7 +9,7 @@ router.use(express.json());
 router.get('/allUser', (req, res) => {
     const allUserQuery = 'SELECT id, firstname, lastname, email, sexe, price FROM user';
 
-    connection.query(allUserQuery, (error, results) => {
+    client.query(allUserQuery, (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
             res.status(500).send('Erreur serveur');
@@ -23,7 +23,7 @@ router.get('/allUser', (req, res) => {
 router.get('/login', (req, res) => {
 
     const emailLoginQuery = 'SELECT id, email FROM user';
-    connection.query(emailLoginQuery, (error, results) => {
+    client.query(emailLoginQuery, (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
             res.status(500).send('Erreur serveur');
@@ -48,7 +48,7 @@ router.post('/addUser', (req, res) => {
         const finalPrice = isChecked ? price * 0.82 : price;
         const addUserQuery = 'INSERT INTO user (firstname, lastname, email, password, sexe, price) VALUES (?, ?, ?, ?, ?, ?)';
 
-        connection.query(addUserQuery, [firstname, lastname, email, encryptedPassword, sexe, finalPrice], (error, results) => {
+        client.query(addUserQuery, [firstname, lastname, email, encryptedPassword, sexe, finalPrice], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la sauvegarde d\'un utilisateur :', error);
                 return res.status(500).send('Erreur serveur');
@@ -61,7 +61,7 @@ router.post('/addUser', (req, res) => {
 router.get('/user/:id', (req, res) => {
     const userId = req.params.id;
     const userQuery = 'SELECT * FROM user WHERE id = ?';
-    connection.query(userQuery, [userId], (error, results) => {
+    client.query(userQuery, [userId], (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
             res.status(500).send('Erreur serveur');
@@ -77,7 +77,7 @@ router.get('/user/:id', (req, res) => {
 
 router.get('/budget', (req, res) => {  
     const budgetQuery = 'SELECT price FROM user';
-    connection.query(budgetQuery, (error, results) => {
+    client.query(budgetQuery, (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
             res.status(500).send('Erreur serveur');
@@ -100,7 +100,7 @@ router.post('/updateUser', (req, res) => {
         }
 
         const updateUserQuery = 'UPDATE user SET firstname = ?, email = ?, password = ?, price = ? WHERE id = ?';
-        connection.query(updateUserQuery, [firstname, email, encryptedPassword, price, id], (error, results) => {
+        client.query(updateUserQuery, [firstname, email, encryptedPassword, price, id], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la modification d\'un utilisateur :', error);
                 return res.status(500).send('Erreur serveur');
@@ -114,7 +114,7 @@ router.post('/deleteUser', (req, res) => {
     const { id } = req.body;
 
     const deleteUserQuery = 'DELETE FROM user WHERE id = ?';
-    connection.query(deleteUserQuery, [id], (error, results) => {
+    client.query(deleteUserQuery, [id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la suppression d\'un utilisateur :', error);
             return res.status(500).send('Erreur serveur');
