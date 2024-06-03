@@ -2,11 +2,10 @@ require('dotenv').config();
 const { Client } = require('pg');
 // Configuration de la connexion à la base de données
 const client = new Client({
-    host: process.env.PGHOST,
-    user: process.env.PGUSER, 
-    password: process.env.PGPASSWORD,  
-    database: process.env.PGDATABASE,
-    port : process.env.PGPORT
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+}
 });
 
 client.connect((err) => {
