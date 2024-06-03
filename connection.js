@@ -1,14 +1,14 @@
-const mysql = require('mysql');
-
+require('dotenv').config();
+const { Client } = require('pg');
 // Configuration de la connexion à la base de données
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', 
-    password: '',  
-    database: 'shop2platedatabase' 
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+}
 });
 
-connection.connect((err) => {
+client.connect((err) => {
     if (err) {
         console.error('Erreur de connexion à la base de données :', err);
         return;
@@ -16,4 +16,4 @@ connection.connect((err) => {
     console.log('Connexion à la base de données réussie');
 });
 
-module.exports = connection;
+module.exports = client;

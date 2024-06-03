@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `User` (
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `sexe` boolean NOT NULL,
-    `price` int(11) NOT NULL
+    `price` float NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Product` (
@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS `ShoppingList` (
 CREATE TABLE IS NOT EXISTS `Expenses` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `userId` int(11) NOT NULL,
-    `price` int(11) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `price` float NOT NULL,
     `date` date NOT NULL,
     FOREIGN KEY (userId) REFERENCES User(id)
 );
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `Stock` (
 CREATE TABLE IF NOT EXISTS `ProductStock` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL,
-    `price` int(11) NOT NULL,
+    `price`float NOT NULL,
     `quantity` int(11) NOT NULL,
     `expirationDate` date NOT NULL, 
     `openingDate` date NOT NULL,
