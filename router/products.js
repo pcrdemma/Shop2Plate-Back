@@ -4,7 +4,7 @@ const client = require('../connection');
 const router = express.Router();
 
 router.get('/allProduct', (req, res) => {
-    const allProductQuery = 'SELECT * FROM product';
+    const allProductQuery = 'SELECT * FROM "public"."Product"';
 
     client.query(allProductQuery, (error, results) => {
         if (error) {
@@ -21,7 +21,7 @@ router.get('/allProduct', (req, res) => {
 
 router.post ('/addProduct', (req, res ) =>{
     const {name, price, category, quantity} = req.body;
-    const addProductQuery = 'INSERT INTO product (name, price, category, quantity) VALUES (?, ?, ?, ?)';
+    const addProductQuery = 'INSERT INTO "public"."Product" (name, price, category, quantity) VALUES ($1, $2, $3, $4)';
     client.query(addProductQuery, [name, price, category, quantity], (error, results) => {
         if (error) {
             console.error('Erreur lors de la sauvegarde d\'un produit :', error);
@@ -36,7 +36,7 @@ router.post ('/addProduct', (req, res ) =>{
 router.post('/deleteProduct', (req, res) => {
     const { id } = req.body;
 
-    const deleteProductQuery = 'DELETE FROM product WHERE id = ?';
+    const deleteProductQuery = 'DELETE FROM "public"."Product" WHERE id = $1';
     client.query(deleteProductQuery, [id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la suppression d\'un produit :', error);
@@ -50,7 +50,7 @@ router.post('/deleteProduct', (req, res) => {
 router.post('/updateProduct', (req, res) => {
     const { id, name, price, category, quantity } = req.body;
 
-    const updateProductQuery = 'UPDATE product SET name = ?, price = ?, category = ?, quantity = ? WHERE id = ?';
+    const updateProductQuery = 'UPDATE "public"."Product" SET name = $2, price = $3, category = $4, quantity = $5 WHERE id = $1';
     client.query(updateProductQuery, [name, price, category, quantity, id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la modification d\'un produit :', error);

@@ -6,7 +6,7 @@ router.use(express.json());
 
 
 router.get("/allExpenses", (req, res) => {
-    const allExpensesQuery = "SELECT * FROM expenses WHERE userid = ?";
+    const allExpensesQuery = 'SELECT * FROM "public"."Expenses" WHERE userid = $1';
     client.query(allExpensesQuery, [req.query.userid], (error, results) => {
         if (error) {
             console.error("Erreur lors de la requête à la base de données :", error);
@@ -23,7 +23,7 @@ router.post("/addExpenses", (req, res) => {
         return res.status(400).send("Données manquantes");
     }
 
-    const addExpensesQuery = "INSERT INTO expenses (name, price, date, userid) VALUES (?, ?, ?, ?)";
+    const addExpensesQuery = 'INSERT INTO "public"."Expenses" (name, price, date, userid) VALUES ($1, $2, $3, $4)';
 
     client.query(addExpensesQuery, [name, price, date, userid], (error, results) => {
         if (error) {
@@ -35,7 +35,7 @@ router.post("/addExpenses", (req, res) => {
 });
 
 router.get("/expensesTotal", (req, res) => {
-    const expensesTotalQuery = "SELECT SUM(price) as total FROM expenses WHERE userid = ?";
+    const expensesTotalQuery = 'SELECT SUM(price) as total FROM "public"."Expenses" WHERE userid = $1';
     client.query(expensesTotalQuery, [req.query.userid], (error, results) => {
         if (error) {
             console.error("Erreur lors de la requête à la base de données :", error);
@@ -48,7 +48,7 @@ router.get("/expensesTotal", (req, res) => {
 
 router.post("/deleteExpenses", (req, res) => {
     const { id } = req.body;
-    const deleteExpensesQuery = "DELETE FROM expenses WHERE id = ?";
+    const deleteExpensesQuery = 'DELETE FROM "public"."Expenses" WHERE id = $1';
     client.query(deleteExpensesQuery, [id], (error, results) => {
         if (error) {
             console.error("Erreur lors de la suppression d'une dépense :", error);

@@ -7,7 +7,7 @@ router.use(express.json());
 
 
 router.get('/allUser', (req, res) => {
-    const allUserQuery = 'SELECT id, firstname, lastname, email, sexe, price FROM user';
+    const allUserQuery = 'SELECT id, firstname, lastname, email, sexe, price FROM "public"."User"';
 
     client.query(allUserQuery, (error, results) => {
         if (error) {
@@ -22,7 +22,7 @@ router.get('/allUser', (req, res) => {
 
 router.get('/login', (req, res) => {
 
-    const emailLoginQuery = 'SELECT id, email FROM user';
+    const emailLoginQuery = 'SELECT id, email FROM "public"."User"';
     client.query(emailLoginQuery, (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
@@ -46,7 +46,7 @@ router.post('/addUser', (req, res) => {
         }
 
         const finalPrice = isChecked ? price * 0.82 : price;
-        const addUserQuery = 'INSERT INTO user (firstname, lastname, email, password, sexe, price) VALUES (?, ?, ?, ?, ?, ?)';
+        const addUserQuery = 'INSERT INTO "public"."User" (firstname, lastname, email, password, sexe, price) VALUES ($1, $2, $3, $4, $5, $6)';
 
         client.query(addUserQuery, [firstname, lastname, email, encryptedPassword, sexe, finalPrice], (error, results) => {
             if (error) {
@@ -60,7 +60,7 @@ router.post('/addUser', (req, res) => {
 
 router.get('/user/:id', (req, res) => {
     const userId = req.params.id;
-    const userQuery = 'SELECT * FROM user WHERE id = ?';
+    const userQuery = 'SELECT * FROM "public"."User" WHERE id = $1';
     client.query(userQuery, [userId], (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
@@ -76,7 +76,7 @@ router.get('/user/:id', (req, res) => {
 });
 
 router.get('/budget', (req, res) => {  
-    const budgetQuery = 'SELECT price FROM user';
+    const budgetQuery = 'SELECT price FROM "public"."User"';
     client.query(budgetQuery, (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
@@ -99,7 +99,7 @@ router.post('/updateUser', (req, res) => {
             return res.status(500).send('Erreur serveur');
         }
 
-        const updateUserQuery = 'UPDATE user SET firstname = ?, email = ?, password = ?, price = ? WHERE id = ?';
+        const updateUserQuery = 'UPDATE "public"."User" SET firstname = $2, email = $3, password = $4, price = $5 WHERE id = $1';
         client.query(updateUserQuery, [firstname, email, encryptedPassword, price, id], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la modification d\'un utilisateur :', error);
@@ -113,7 +113,7 @@ router.post('/updateUser', (req, res) => {
 router.post('/deleteUser', (req, res) => {
     const { id } = req.body;
 
-    const deleteUserQuery = 'DELETE FROM user WHERE id = ?';
+    const deleteUserQuery = 'DELETE FROM "public"."User" WHERE id = $1';
     client.query(deleteUserQuery, [id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la suppression d\'un utilisateur :', error);

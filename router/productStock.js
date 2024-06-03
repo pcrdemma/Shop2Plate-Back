@@ -4,7 +4,7 @@ const client = require('../connection');
 const router = express.Router();
  
 router.get('/allProductStock', (req, res) => {
-    const allProductStockQuery = 'SELECT * FROM productstock';
+    const allProductStockQuery = 'SELECT * FROM "public"."ProductStock"';
 
     client.query(allProductStockQuery, (error, results) => {
         if (error) {
@@ -25,7 +25,7 @@ router.post('/addToStock', (req, res) => {
     expirationDate = expirationDate ? expirationDate : '0000-00-00';
     openingDate = openingDate ? openingDate : '0000-00-00';
 
-    const addToStockQuery = 'INSERT INTO productstock (name, quantity, expirationDate, openingDate, storageTime) VALUES (?, ?, ?, ?, ?)';
+    const addToStockQuery = 'INSERT INTO "public"."ProductStock" (name, quantity, expirationDate, openingDate, storageTime) VALUES ($1, $2, $3, $4, $5)';
     client.query(addToStockQuery, [name, quantity, expirationDate, openingDate, storageTime], (error, results) => {
         if (error) {
             console.error('Erreur lors de la sauvegarde d\'un produit en stock :', error);
@@ -39,7 +39,7 @@ router.post('/addToStock', (req, res) => {
 router.post('/deleteFromStock', (req, res) => {
     const { id } = req.body;
 
-    const deleteFromStockQuery = 'DELETE FROM productstock WHERE id = ?';
+    const deleteFromStockQuery = 'DELETE FROM "public"."ProductStock" WHERE id = $1';
     client.query(deleteFromStockQuery, [id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la suppression d\'un produit en stock :', error);
@@ -53,7 +53,7 @@ router.post('/deleteFromStock', (req, res) => {
 router.post('/updateStock', (req, res) => {
     const { id, name, quantity, expirationDate, openingDate, storageTime } = req.body;
 
-    const updateStockQuery = 'UPDATE productstock SET name = ?, quantity = ?, expirationDate = ?, openingDate = ?, storageTime = ? WHERE id = ?';
+    const updateStockQuery = 'UPDATE "public"."ProductStock" SET name = $2, quantity = $3, expirationDate = $4, openingDate = $5, storageTime = $6 WHERE id = $1';
     client.query(updateStockQuery, [name, quantity, expirationDate, openingDate, storageTime, id], (error, results) => {
         if (error) {
             console.error('Erreur lors de la modification d\'un produit en stock :', error);
