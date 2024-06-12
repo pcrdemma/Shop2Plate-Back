@@ -31,7 +31,7 @@ router.get('/login', (req, res) => {
         return res.status(400).json({ success: false, message: 'Email et mot de passe requis' });
     }
 
-    const emailLoginQuery = 'SELECT email, password FROM "public"."User" WHERE email = $0'; // Modifier la requête pour sélectionner l'utilisateur en fonction de l'email
+    const emailLoginQuery = 'SELECT email, password FROM "public"."User" WHERE email = $1'; // Modifier la requête pour sélectionner l'utilisateur en fonction de l'email
     client.query(emailLoginQuery, [email], (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
