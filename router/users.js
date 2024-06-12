@@ -63,7 +63,9 @@ router.get('/login', (req, res) => {
 
 router.post('/addUser', (req, res) => {
     const { firstname, lastname, email, password, sexe, price, isChecked } = req.body;
-    if (!firstname || !lastname || !email || !password || !sexe || !price) {
+
+    // Vérifiez les champs obligatoires
+    if (!firstname || !lastname || !email || !password || typeof sexe === 'undefined' || typeof price === 'undefined') {
         return res.status(400).send('Données manquantes');
     }
 
