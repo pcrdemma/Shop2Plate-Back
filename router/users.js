@@ -63,6 +63,7 @@ router.get('/login', (req, res) => {
 
 router.post('/addUser', (req, res) => {
     const { firstname, lastname, email, password, sexe, price, isChecked } = req.body;
+    console.log(req.body);
 
     // Vérifiez les champs obligatoires
     if (!firstname || !lastname || !email || !password || typeof sexe === 'undefined' || typeof price === 'undefined') {
