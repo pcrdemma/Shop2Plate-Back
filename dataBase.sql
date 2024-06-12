@@ -1,52 +1,52 @@
 CREATE TABLE IF NOT EXISTS "User" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "firstname" varchar(255) NOT NULL,
-    "lastname" varchar(255) NOT NULL,
-    "email" varchar(255) NOT NULL,
-    "password" varchar(255) NOT NULL,
-    "sexe" boolean NOT NULL,
-    "price" float NOT NULL
+    "id" SERIAL PRIMARY KEY,
+    "firstname" VARCHAR(255) NOT NULL,
+    "lastname" VARCHAR(255) NOT NULL,
+    "email" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255) NOT NULL,
+    "sexe" BOOLEAN NOT NULL,
+    "price" REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "Product" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "name" varchar(255) NOT NULL,
-    "price" int(11) NOT NULL,
-    "category" varchar(255) NOT NULL,
-    "quantity" int(11) NOT NULL
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "price" INTEGER NOT NULL,
+    "category" VARCHAR(255) NOT NULL,
+    "quantity" INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "ShoppingList" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "userId" int(11) NOT NULL,
-    "productId" int(11) NOT NULL,
-    FOREIGN KEY (userId) REFERENCES User(id),
-    FOREIGN KEY (productId) REFERENCES Product(id)
-);	
+    "id" SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL,
+    "productId" INTEGER NOT NULL,
+    FOREIGN KEY ("userId") REFERENCES "User"("id"),
+    FOREIGN KEY ("productId") REFERENCES "Product"("id")
+);
 
-CREATE TABLE IS NOT EXISTS "Expenses" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "userId" int(11) NOT NULL,
-    "name" varchar(255) NOT NULL,
-    "price" float NOT NULL,
-    "date" date NOT NULL,
-    FOREIGN KEY (userId) REFERENCES User(id)
+CREATE TABLE IF NOT EXISTS "Expenses" (
+    "id" SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "price" REAL NOT NULL,
+    "date" DATE NOT NULL,
+    FOREIGN KEY ("userId") REFERENCES "User"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "Stock" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "userId" int(11) NOT NULL,
-    "productStockId" int(11) NOT NULL,
-    FOREIGN KEY (userId) REFERENCES User(id),
-    FOREIGN KEY (productStockId) REFERENCES Product(id)
+    "id" SERIAL PRIMARY KEY,
+    "userId" INTEGER NOT NULL,
+    "productStockId" INTEGER NOT NULL,
+    FOREIGN KEY ("userId") REFERENCES "User"("id"),
+    FOREIGN KEY ("productStockId") REFERENCES "Product"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "ProductStock" (
-    "id" int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    "name" varchar(255) NOT NULL,
-    "price"float NOT NULL,
-    "quantity" int(11) NOT NULL,
-    "expirationDate" date NOT NULL, 
-    "openingDate" date NOT NULL,
-    "storageTime" int(11) NOT NULL
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL,
+    "price" REAL NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "expirationDate" DATE NOT NULL,
+    "openingDate" DATE NOT NULL,
+    "storageTime" INTEGER NOT NULL
 );

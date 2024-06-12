@@ -21,21 +21,49 @@ router.get('/allUser', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    console.log(req);
+    const email = req.query["email"];
+    const password  = req.query["password"];
 
-    const emailLoginQuery = 'SELECT id, email FROM "public"."User"';
-    client.query(emailLoginQuery, (error, results) => {
+    console.log(email, password);
+
+    if (!email || !password) {
+        return res.status(400).json({ success: false, message: 'Email et mot de passe requis' });
+    }
+
+    const emailLoginQuery = 'SELECT email, password FROM "public"."User" WHERE email = $0'; // Modifier la requête pour sélectionner l'utilisateur en fonction de l'email
+    client.query(emailLoginQuery, [email], (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
-            res.status(500).send('Erreur serveur');
-            return;
+            return res.status(500).send('Erreur serveur');
         }
-        res.json(results);
+
+        if (results.rows.length == 0) {
+            // Aucun utilisateur trouvé avec cet email, renvoyer une erreur 401
+            return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect' });
+        }
+
+        const user = results.rows[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+                console.error('Erreur lors de la comparaison des mots de passe :', err);
+                return res.status(500).send('Erreur serveur');
+            }
+
+            if (isMatch) {
+                return res.json({ success: true, message: 'Connexion réussie', userId: user.id });
+            } else {
+                return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect' });
+            }
+        });
     });
 });
 
+
+
 router.post('/addUser', (req, res) => {
     const { firstname, lastname, email, password, sexe, price, isChecked } = req.body;
-    if (!firstname || !lastname || !email || !password || !sexe || price === undefined) {
+    if (!firstname || !lastname || !email || !password || !sexe || !price) {
         return res.status(400).send('Données manquantes');
     }
 
