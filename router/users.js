@@ -63,7 +63,6 @@ router.get('/login', (req, res) => {
 
 router.post('/addUser', (req, res) => {
     const { firstname, lastname, email, password, sexe, price, isChecked } = req.body;
-    console.log(req.body);
 
     // Vérifiez les champs obligatoires
     if (!firstname || !lastname || !email || !password || typeof sexe === 'undefined' || typeof price === 'undefined') {
@@ -98,11 +97,11 @@ router.get('/user/:id', (req, res) => {
             res.status(500).send('Erreur serveur');
             return;
         }
-        if (results.length === 0) {
+        if (results.rows.length === 0) {
             res.status(404).send('Utilisateur non trouvé');
             return;
         }
-        res.json(results[0]);
+        res.json(results.rows[0]);
     });
 });
 
