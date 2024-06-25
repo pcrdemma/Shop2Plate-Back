@@ -140,8 +140,8 @@ router.post('/updateUser', (req, res) => {
     });
 });
 
-router.post('/deleteUser', (req, res) => {
-    const { id } = req.body;
+router.post('/deleteUser/:id', (req, res) => {
+    const { id } = req.params.id;
 
     const deleteUserQuery = 'DELETE FROM "public"."User" WHERE id = $1';
     client.query(deleteUserQuery, [id], (error, results) => {
