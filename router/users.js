@@ -74,14 +74,16 @@ router.post('/addUser', (req, res) => {
         }
 
         const finalPrice = isChecked ? price * 0.82 : price;
-        const addUserQuery = 'INSERT INTO "public"."User" (firstname, lastname, email, password, sexe, price) VALUES ($1, $2, $3, $4, $5, $6)';
+        const addUserQuery = 'INSERT INTO "public"."User" (firstname, lastname, email, password, sexe, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, firstname, lastname, email, sexe, price';
 
         client.query(addUserQuery, [firstname, lastname, email, encryptedPassword, sexe, finalPrice], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la sauvegarde d\'un utilisateur :', error);
                 return res.status(500).send('Erreur serveur');
             }
-            res.sendStatus(200);
+
+            const user = results.rows[0]; // Récupère l'utilisateur avec son ID
+            res.json({ success: true, message: 'Utilisateur ajouté avec succès', user });
         });
     });
 });
