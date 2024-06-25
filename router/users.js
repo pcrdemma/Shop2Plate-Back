@@ -21,24 +21,21 @@ router.get('/allUser', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    console.log(req);
     const email = req.query["email"];
-    const password  = req.query["password"];
-
-    console.log(email, password);
+    const password = req.query["password"];
 
     if (!email || !password) {
         return res.status(400).json({ success: false, message: 'Email et mot de passe requis' });
     }
 
-    const emailLoginQuery = 'SELECT email, password FROM "public"."User" WHERE email = $1'; // Modifier la requête pour sélectionner l'utilisateur en fonction de l'email
+    const emailLoginQuery = 'SELECT * FROM "public"."User" WHERE email = $1'; // Sélectionner toutes les colonnes de l'utilisateur
     client.query(emailLoginQuery, [email], (error, results) => {
         if (error) {
             console.error('Erreur lors de la requête à la base de données :', error);
             return res.status(500).send('Erreur serveur');
         }
 
-        if (results.rows.length == 0) {
+        if (results.rows.length === 0) {
             // Aucun utilisateur trouvé avec cet email, renvoyer une erreur 401
             return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect' });
         }
@@ -51,14 +48,15 @@ router.get('/login', (req, res) => {
             }
 
             if (isMatch) {
-                return res.json({ success: true, message: 'Connexion réussie', userId: user.id });
+                // Retirer le mot de passe de l'objet utilisateur avant de le retourner
+                const { password, ...userWithoutPassword } = user;
+                return res.json({ success: true, message: 'Connexion réussie', user: userWithoutPassword });
             } else {
                 return res.status(401).json({ success: false, message: 'Email ou mot de passe incorrect' });
             }
         });
     });
 });
-
 
 
 router.post('/addUser', (req, res) => {
@@ -105,7 +103,7 @@ router.get('/user/:id', (req, res) => {
     });
 });
 
-router.get('/budget', (req, res) => {  
+router.get('/budget', (req, res) => {
     const budgetQuery = 'SELECT price FROM "public"."User"';
     client.query(budgetQuery, (error, results) => {
         if (error) {
